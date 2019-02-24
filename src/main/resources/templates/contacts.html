@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Kontakty</title>
+</head>
+<body>
+    <h3 style="text-align: center">Lista kontaktów</h3>
+    <section style="text-align: center">
+        <ul th:if="${contactList} != null">
+            <li th:each="contact: ${contactList}">
+                <span th:text="${contact} + ' '"></span>
+                <a th:href="@{'/contact/delete/' + ${contact.getId()}}">Usuń</a>
+            </li>
+        </ul>
+        <br/><br/>
+        <a href="/home_page">Powrót</a>
+    </section>
+</body>
+</html>

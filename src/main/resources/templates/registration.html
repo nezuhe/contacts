@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejestracja</title>
+</head>
+<body>
+    <div style="text-align: center;">
+        REJESTRACJA<br/><br/>
+        <form method="post" action="/registration" th:object="${user}">
+            <p th:text="${registrationErrorMessage}"></p>
+            Login<br/>
+            <input th:field="*{login}" placeholder="Login"><br/>
+            <br/>
+            Hasło<br/>
+            <input th:field="*{password}" placeholder="Hasło"><br/>
+            <br/>
+            Powtórz hasło<br/>
+            <input th:object="${repeatedPassword}" placeholder="Potwierdź hasło"><br/>
+            <br/>
+            <input type="submit" value="Zerejestruj">
+        </form>
+    </div>
+
+</body>
+</html>
