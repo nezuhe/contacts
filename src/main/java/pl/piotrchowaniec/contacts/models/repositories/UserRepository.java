@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<UserEntity, Integer> {
     boolean existsByLogin(String login);
 
-    @Query(value = "SELECT * FROM `users` WHERE `login` = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM `users` WHERE `login` = ?", nativeQuery = true)
     Optional<UserEntity> getUserByLogin(String login);
 }

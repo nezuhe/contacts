@@ -17,8 +17,8 @@ import javax.validation.Valid;
 @Controller
 public class ContactController {
 
-    final UserSession userSession;
-    final ContactService contactService;
+    private final UserSession userSession;
+    private final ContactService contactService;
 
     @Autowired
     public ContactController(UserSession userSession, ContactService contactService) {
@@ -43,18 +43,19 @@ public class ContactController {
         }
 
         if (!contactService.addContact(addContactForm)) {
-            model.addAttribute("phoneAlreadyExistsMessage", "Kontakt z podanym numerem już istnieje");
+            model.addAttribute("message", "Kontakt z podanym numerem już istnieje");
             return "add_contact_form";
         }
 
-        model.addAttribute("contactActionMessage", "Kontakt został utworzony!");
+        model.addAttribute("message", "Kontakt został utworzony!");
         return "home_page";
     }
 
     @GetMapping("/contact/delete/{id}")
-    public String contactDelete(@PathVariable("id") int id) {
+    public String contactDelete(@PathVariable("id") int id,
+                                Model model) {
         contactService.deleteContact(id);
-//        model.addAttribute("contactActionMessage", "Kontakt został usunięty!");
+        model.addAttribute("message", "Kontakt został usunięty!");
         return "home_page";
     }
 }

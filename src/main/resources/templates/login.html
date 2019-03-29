@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <title>Zaloguj się</title>
@@ -7,15 +7,16 @@
 <body>
     <div style="text-align: center">
         <h3 style="text-align: center">LOGOWANIE</h3><br/>
-        <p style="text-align: center" th:text="${logoutMessage}"></p>
-        <p style="text-align: center" th:text="${registrationMessage}"></p>
-        <form method="post" action="/login" th:object="${user}">
+        <p style="text-align: center" th:text="${message}"></p>
+        <!--<p style="text-align: center" th:text="${logoutMessage}"></p>-->
+        <!--<p style="text-align: center" th:text="${registrationMessage}"></p>-->
+        <form method="post" action="/login" th:object="${loginForm}">
             Login: <input th:field="*{login}"><br/>
             Hasło: <input th:field="*{password}" type="password"><br/>
             <input type="submit" value="Zaloguj"><br/>
             <p style="color: red" th:text="${loginError}"></p>
             <br/>
-            Nie masz konta? <a href="registration">Zarejestruj się!</a>
+            Nie masz konta? <a href="/registration">Zarejestruj się!</a>
         </form>
     </div>
 </body>

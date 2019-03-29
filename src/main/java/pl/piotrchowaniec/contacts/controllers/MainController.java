@@ -26,20 +26,14 @@ public class MainController {
 
     @GetMapping("/contacts")
     public String contacts(Model model) {
-//        if(!userSession.isLoggedIn()) {
-//            return "redirect:/login";
-//        }
         model.addAttribute("contactList", contactService.getContacts());
         return "contacts";
     }
 
     @GetMapping("/home_page")
     public String homePage(Model model) {
-//        if (!userSession.isLoggedIn()) {
-//            return "redirect:/login";
-//        }
 
-        model.addAttribute("accountStatus", userSession.getUserEntity().getAccountStatus());
+        model.addAttribute("accountStatus", "Account status: " + userSession.getUserEntity().getAccountStatus());
         return "home_page";
     }
 }

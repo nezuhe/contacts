@@ -3,57 +3,56 @@ package pl.piotrchowaniec.contacts.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import pl.piotrchowaniec.contacts.models.User;
+import pl.piotrchowaniec.contacts.models.forms.LoginForm;
+import pl.piotrchowaniec.contacts.models.forms.RegistrationForm;
 import pl.piotrchowaniec.contacts.models.services.UserService;
+import pl.piotrchowaniec.contacts.models.validators.RegistrationValidator;
+//import pl.piotrchowaniec.contacts.models.validators.RegistrationValidator;
+
+import javax.validation.Valid;
 
 @Controller
 public class RegistrationController {
 
-    private String repeatedPassword;
-
-    final UserService userService;
+    private final UserService userService;
+    private final RegistrationValidator registrationValidator;
 
     @Autowired
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserService userService, RegistrationValidator registrationValidator) {
         this.userService = userService;
+        this.registrationValidator = registrationValidator;
     }
 
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(registrationValidator);
+    }
 
     @GetMapping("/registration")
     public String register(Model model) {
-        model.addAttribute("userData", new User());
-        model.addAttribute("repeatedPassword", repeatedPassword);
+        model.addAttribute("registrationForm", new RegistrationForm());
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String register(@ModelAttribute User user, Model model) {
-        if (!passwordConfirmation(user, repeatedPassword)) {
-            model.addAttribute("registrationErrorMessage", "Podane hasła są różne");
+    public String register(@ModelAttribute @Valid RegistrationForm registrationForm,
+                           BindingResult result,
+                           Model model) {
+        if (result.hasErrors()) {
             return "registration";
         }
-        if (!userService.addUser(user)) {
-            model.addAttribute("registrationErrorMessage", "Podany login jest już zajęty");
+        if (!userService.isLoginFree(registrationForm.getLogin())) {
+            model.addAttribute("message", "Podany login jest już zajęty");
             return "registration";
         }
-        return "login";
-    }
-
-//        if (!userData.getPassword().equals(confirmPassword)) {
-//            model.addAttribute("registrationErrorMessage", "Podane hasła są róźne");
-//            return "registration";
-//        }
-//        if (!userService.login(userData)) {
-//            return "registration-complete";
-//        } else {
-//        }
-//        return "redirect:/registration";
-
-    private boolean passwordConfirmation(User user, String repeatedPassword) {
-        if (user.getPassword().equals(repeatedPassword)) return true;
-        return false;
+        userService.addUser(registrationForm);
+        return "redirect:/";
     }
 }

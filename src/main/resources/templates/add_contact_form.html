@@ -8,7 +8,7 @@
     <h3 style="text-align: center">DODAJ KONTAKT</h3>
 
     <div style="text-align: center">
-        <p th:text="${phoneAlreadyExistsMessage}"></p>
+        <p th:text="${message}"></p>
 
         <form method="post" th:action="@{/contact/add}" th:object="${addContactForm}">
             <span th:errors="*{name}"></span>

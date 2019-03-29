@@ -2,9 +2,10 @@ package pl.piotrchowaniec.contacts.models.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.piotrchowaniec.contacts.models.User;
+import pl.piotrchowaniec.contacts.models.forms.LoginForm;
 import pl.piotrchowaniec.contacts.models.entities.UserEntity;
-import pl.piotrchowaniec.contacts.models.mappers.UserToUserEntityMapper;
+import pl.piotrchowaniec.contacts.models.forms.RegistrationForm;
+import pl.piotrchowaniec.contacts.models.mappers.RegistrationFormToUserEntityMapper;
 import pl.piotrchowaniec.contacts.models.repositories.UserRepository;
 
 import java.util.Optional;
@@ -12,9 +13,9 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    final HashService hashService;
-    final UserSession userSession;
-    final UserRepository userRepository;
+    private final HashService hashService;
+    private final UserSession userSession;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserService(HashService hashService, UserSession userSession, UserRepository userRepository) {
@@ -23,36 +24,23 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean addUser(User user) {
-        if (!isLoginFree(user.getLogin())) {
-            return false;
-        }
-        user.setPassword(hashService.hashPassword(user.getPassword()));
-        return userRepository.save(new UserToUserEntityMapper().map(user)) != null;
-//        return true;
-    }
-
-    public boolean isPasswordConfirmed(User user) {
-        if (user.getPassword().equals(user.getConfirmPassword())) {
-            return false;
-        }
-        return true;
+    public void addUser(RegistrationForm registrationForm) {
+        registrationForm.setPassword(hashService.hashPassword(registrationForm.getPassword()));
+        userRepository.save(new RegistrationFormToUserEntityMapper().map(registrationForm));
     }
 
     public boolean isLoginFree(String login) {
         return !userRepository.existsByLogin(login);
     }
 
-    public boolean login(User user) {
-        Optional<UserEntity> userWhichTryToLogIn = userRepository.getUserByLogin(user.getLogin());
-
+    public boolean login(LoginForm loginForm) {
+        Optional<UserEntity> userWhichTryToLogIn = userRepository.getUserByLogin(loginForm.getLogin());
         if (userWhichTryToLogIn.isPresent() &&
-                hashService.isPasswordCorrect(user.getPassword(), userWhichTryToLogIn.get().getPassword())) {
+                hashService.isPasswordCorrect(loginForm.getPassword(), userWhichTryToLogIn.get().getPassword())) {
             userSession.setLoggedIn(true);
             userSession.setUserEntity(userWhichTryToLogIn.get());
             return true;
         }
-
         return false;
     }
 }
