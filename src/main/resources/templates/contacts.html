@@ -1,20 +1,54 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
-    <meta charset="UTF-8">
     <title>Kontakty</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h3 style="text-align: center">Lista kontaktów</h3>
-    <section style="text-align: center">
-        <ul th:if="${contactList} != null">
-            <li th:each="contact: ${contactList}">
-                <span th:text="${contact} + ' '"></span>
-                <a th:href="@{'/contact/delete/' + ${contact.getId()}}">Usuń</a>
-            </li>
-        </ul>
-        <br/><br/>
-        <a href="/home_page">Powrót</a>
-    </section>
+    <div class="container">
+        <div class="jumbotron p-4 mb-2 bg-info text-white">
+            <h3 style="text-align: center">Lista kontaktów</h3>
+        </div>
+
+        <div th:if="${contactsMessage} != null" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+            <span th:text="${contactsMessage}"></span>
+        </div>
+
+        <div class="d-inline mx-auto">
+            <h5 class="alert alert-info" th:if="${contactList.size()} == 0">Lista kontaktów jest pusta</h5>
+            <table th:if="${contactList.size()} > 0" class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>Numer</th>
+                        <th>e-Mail</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="contact : ${contactList}">
+                        <td th:text="*{contact.getId()}"></td>
+                        <td th:text="*{contact.getName()}"></td>
+                        <td th:text="*{contact.getSurname()}"></td>
+                        <td th:text="*{contact.getPhone()}"></td>
+                        <td th:text="*{contact.getEmail()}"></td>
+                        <td>
+                            <a th:href="@{'/contact/delete/' + ${contact.getId()}}" class="btn btn-outline-info btn-sm" role="button">Usuń</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <a href="/home_page" class="btn btn-secondary" role="button">Powrót</a>
+        </div>
+    </div>
 </body>
 </html>

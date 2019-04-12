@@ -1,29 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
-    <meta charset="UTF-8">
     <title>Rejestracja</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div style="text-align: center;">
-        REJESTRACJA<br/><br/>
-        <form th:action="@{/registration}" th:object="${registrationForm}" method="post">
-            <p th:text="${message}"></p>
-            Login<br/>
-            <input type="text" id="login" th:field="*{login}" placeholder="Login"><br/>
-            <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}">required.login</span>
-            <br/>
-            Hasło<br/>
-            <input type="password" id="password" th:field="*{password}" placeholder="Hasło"><br/>
-            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-            <span th:errors="*{password}"></span>
-            <br/>
-            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Potwierdź hasło"><br/>
-            <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
-            <br/><br/>
-            <button type="submit">Zerejestruj</button>
-        </form>
-    </div>
+    <div class="container w-25">
+        <div class="jumbotron p-4 mb-2 bg-info text-white">
+            <h3 style="text-align: center">Rejestracja</h3>
+        </div>
 
+        <form method="post" th:action="@{/registration}" th:object="${registrationForm}">
+            <div class="form-group">
+                <label for="login">Login:</label>
+                <input type="text" class="form-control" id="login" placeholder="Podaj login" name="login" th:field="*{login}">
+                <span class="text-danger" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Hasło:</label>
+                <input type="password" class="form-control" id="password" placeholder="Podaj hasło" name="password" th:field="*{password}">
+                <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Powtórz hasło:</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Powtórz hasło" name="confirmPassword">
+                <span class="text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+            </div>
+            <br/>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-info">Zarejestruj się</button>
+            </div>
+        </form>
+        <br/>
+
+        <div class="text-center">
+            <a href="/home_page" class="btn btn-secondary">Powrót</a>
+        </div>
+    </div>
 </body>
 </html>

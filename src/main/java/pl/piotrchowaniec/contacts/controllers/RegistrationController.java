@@ -4,17 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import pl.piotrchowaniec.contacts.models.forms.LoginForm;
 import pl.piotrchowaniec.contacts.models.forms.RegistrationForm;
 import pl.piotrchowaniec.contacts.models.services.UserService;
 import pl.piotrchowaniec.contacts.models.validators.RegistrationValidator;
-//import pl.piotrchowaniec.contacts.models.validators.RegistrationValidator;
 
 import javax.validation.Valid;
 
@@ -43,9 +40,9 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String register(@ModelAttribute @Valid RegistrationForm registrationForm,
-                           BindingResult result,
+                           BindingResult bindingResult,
                            Model model) {
-        if (result.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "registration";
         }
         if (!userService.isLoginFree(registrationForm.getLogin())) {

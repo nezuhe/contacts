@@ -17,7 +17,4 @@ public interface ContactRepository extends CrudRepository<ContactEntity, Integer
 
     @Query(value = "SELECT * FROM `contacts` WHERE `user_id` = ?1", nativeQuery = true)
     List<ContactEntity> getContactByUserId(int userId);
-
-    @Query(value = "SELECT * FROM `contacts` WHERE `user_id` = ?1", nativeQuery = true)
-    int getContactById(int id);
 }

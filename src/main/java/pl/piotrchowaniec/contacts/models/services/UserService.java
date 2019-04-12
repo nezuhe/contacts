@@ -2,6 +2,8 @@ package pl.piotrchowaniec.contacts.models.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.piotrchowaniec.contacts.models.forms.ChangePasswordForm;
 import pl.piotrchowaniec.contacts.models.forms.LoginForm;
 import pl.piotrchowaniec.contacts.models.entities.UserEntity;
 import pl.piotrchowaniec.contacts.models.forms.RegistrationForm;
@@ -11,6 +13,7 @@ import pl.piotrchowaniec.contacts.models.repositories.UserRepository;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
 
     private final HashService hashService;
@@ -42,5 +45,9 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public void changeUserPassword(ChangePasswordForm changePasswordForm) {
+        userRepository.changePassword(userSession.getUserEntity().getLogin(), hashService.hashPassword(changePasswordForm.getNewPassword()));
     }
 }

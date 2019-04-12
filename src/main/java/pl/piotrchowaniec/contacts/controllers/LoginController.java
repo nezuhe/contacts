@@ -41,9 +41,8 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(Model model) {
         if (userSession.isLoggedIn()) {
-            model.addAttribute("message", "Wylogowano pomyślnie");
             userSession.setLoggedIn(false);
         }
-        return "login";
+        return "redirect:/login";
     }
 }

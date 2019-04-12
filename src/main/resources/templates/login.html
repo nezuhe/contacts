@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
-    <meta charset="UTF-8">
     <title>Zaloguj się</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div style="text-align: center">
-        <h3 style="text-align: center">LOGOWANIE</h3><br/>
-        <p style="text-align: center" th:text="${message}"></p>
-        <!--<p style="text-align: center" th:text="${logoutMessage}"></p>-->
-        <!--<p style="text-align: center" th:text="${registrationMessage}"></p>-->
-        <form method="post" action="/login" th:object="${loginForm}">
-            Login: <input th:field="*{login}"><br/>
-            Hasło: <input th:field="*{password}" type="password"><br/>
-            <input type="submit" value="Zaloguj"><br/>
-            <p style="color: red" th:text="${loginError}"></p>
+    <div class="container w-25">
+        <div class="jumbotron p-4 mb-2 bg-info text-white">
+            <h3 style="text-align: center">Ksiązka telefoniczna</h3>
+        </div>
+        <h4 style="text-align: center">LOGOWANIE</h4><br/>
+        <form method="post" th:action="@{/login}" th:object="${loginForm}">
+
+            <div class="form-group justify-content-center">
+                <label for="login" class="text-center">Login:</label>
+                <input type="text" class="form-control" id="login" placeholder="Podaj login" name="login">
+            </div>
+            <div class="form-group">
+                <label for="password">Hasło:</label>
+                <input type="password" class="form-control" id="password" placeholder="Podaj hasło" name="password">
+            </div>
+            <div class="text-center">
+                <span class="text-danger" th:text="${message}"></span>
+            </div>
             <br/>
-            Nie masz konta? <a href="/registration">Zarejestruj się!</a>
+            <div class="text-center">
+                <button type="submit" class="btn btn-info">Zaloguj</button>
+            </div>
         </form>
+        <div class="text-center">
+            Nie masz konta? <a href="#" th:href="@{/registration}">Zarejestruj się!</a>
+        </div>
     </div>
 </body>
 </html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <title>Dodaj kontakt</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container w-25">
+        <div class="jumbotron p-4 mb-2 bg-info text-white">
+            <h3 style="text-align: center">Dodaj kontakt</h3>
+        </div>
+
+        <div th:if="${contactFormMessage} != null" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+            <span th:text="${contactFormMessage}"></span>
+        </div>
+
+        <form method="post" th:action="@{/contact/add}" th:object="${contactForm}">
+            <div class="form-group">
+                <label for="name">Imię:</label>
+                <input type="text" class="form-control" id="name" placeholder="Podaj imię" name="name" required>
+                <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="surname">Nazwisko:</label>
+                <input type="text" class="form-control" id="surname" placeholder="Podaj nazwisko" name="surname">
+                <span class="text-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Numer telefonu:</label>
+                <input type="text" class="form-control" id="phone" placeholder="Podaj numer" name="phone" required>
+                <span class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" placeholder="Podaj adres e-mail" name="email">
+            </div>
+
+            <div class="text-center">
+                <button type="reset" class="btn btn-info">Wyszyść</button>
+                <button type="submit" class="btn btn-info">Dodaj</button>
+            </div>
+            <br>
+
+            <div class="text-center">
+                <a href="/home_page" class="btn btn-secondary" role="button">Powrót</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

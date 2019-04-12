@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import pl.piotrchowaniec.contacts.models.forms.AddContactForm;
+import pl.piotrchowaniec.contacts.models.forms.ContactForm;
 import pl.piotrchowaniec.contacts.models.services.ContactService;
 import pl.piotrchowaniec.contacts.models.services.UserSession;
 
@@ -26,28 +26,24 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-
     @GetMapping("/contact/add")
     public String addContact(Model model) {
-        model.addAttribute("addContactForm", new AddContactForm());
-        return "add_contact_form";
+        model.addAttribute("contactForm", new ContactForm());
+        return "contact_form";
     }
 
     @PostMapping("/contact/add")
-    public String addContact(@ModelAttribute @Valid AddContactForm addContactForm,
+    public String addContact(@ModelAttribute @Valid ContactForm contactForm,
                              BindingResult result,
                              Model model) {
-
         if (result.hasErrors()) {
-            return "add_contact_form";
+            return "contact_form";
         }
-
-        if (!contactService.addContact(addContactForm)) {
-            model.addAttribute("message", "Kontakt z podanym numerem już istnieje");
-            return "add_contact_form";
+        if (!contactService.addContact(contactForm)) {
+            model.addAttribute("contactFormMessage", "Kontakt z podanym numerem już istnieje");
+            return "contact_form";
         }
-
-        model.addAttribute("message", "Kontakt został utworzony!");
+        model.addAttribute("homePageMessage", "Kontakt został utworzony!");
         return "home_page";
     }
 
@@ -55,7 +51,7 @@ public class ContactController {
     public String contactDelete(@PathVariable("id") int id,
                                 Model model) {
         contactService.deleteContact(id);
-        model.addAttribute("message", "Kontakt został usunięty!");
-        return "home_page";
+        model.addAttribute("contactsMessage", "Kontakt został usunięty!");
+        return "contacts";
     }
 }

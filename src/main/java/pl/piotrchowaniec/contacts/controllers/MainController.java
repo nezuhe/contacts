@@ -10,12 +10,11 @@ import pl.piotrchowaniec.contacts.models.services.UserSession;
 @Controller
 public class MainController {
 
-    private UserSession userSession;
-    private ContactService contactService;
+//    private UserSession userSession;
+    private final ContactService contactService;
 
     @Autowired
-    public MainController(UserSession userSession, ContactService contactService) {
-        this.userSession = userSession;
+    public MainController(ContactService contactService) {
         this.contactService = contactService;
     }
 
@@ -31,9 +30,7 @@ public class MainController {
     }
 
     @GetMapping("/home_page")
-    public String homePage(Model model) {
-
-        model.addAttribute("accountStatus", "Account status: " + userSession.getUserEntity().getAccountStatus());
+    public String homePage() {
         return "home_page";
     }
 }
